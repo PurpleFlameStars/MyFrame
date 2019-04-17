@@ -52,9 +52,10 @@ public class NetworkManager {
 //                        return chain.proceed(request);
 //                    }
 //                })
-                .connectTimeout(10,TimeUnit.SECONDS)
-                .writeTimeout(10,TimeUnit.SECONDS)
-                .readTimeout(10,TimeUnit.SECONDS)
+                .connectTimeout(10,TimeUnit.SECONDS)//设置连接超时
+                .writeTimeout(10,TimeUnit.SECONDS)//设置写超时时间
+                .readTimeout(10,TimeUnit.SECONDS)//设置读取超时时间
+                .retryOnConnectionFailure(true)// 失败重连
                 .build();
 
         retrofit = new Retrofit.Builder()
@@ -63,7 +64,8 @@ public class NetworkManager {
                 //.baseUrl("http://172.17.8.100/")//base_url:http+域名
                 .baseUrl("http://mobile.bwstudent.com/")//base_url:http+域名
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//使用Rxjava对回调数据进行处理
-                .addConverterFactory(GsonConverterFactory.create())//响应结果的解析器，包含gson，xml，protobuf
+                //.addConverterFactory(GsonConverterFactory.create())//响应结果的解析器，包含gson，xml，protobuf
+                .addConverterFactory(LenientGsonConverterFactory.create())
                 .build();
     }
 
